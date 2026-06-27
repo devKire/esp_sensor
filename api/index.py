@@ -1,5 +1,16 @@
-"""Entrypoint Flask compatível com Vercel para o simulador IoT ESP32."""
+"""Entrypoint Flask compativel com Vercel para o simulador IoT ESP32."""
 
+try:
+    from .web_app import app
+except ImportError:
+    from web_app import app
+
+
+if __name__ == "__main__":
+    app.run(debug=True, use_reloader=False)
+
+
+_LEGACY_BODY_NOT_EXECUTED = r'''
 from __future__ import annotations
 
 import csv
@@ -374,5 +385,12 @@ PAGE_TEMPLATE = """
 """
 
 
+try:
+    from .web_app import app as app  # type: ignore[import-not-found]  # noqa: E402,F811
+except ImportError:
+    from web_app import app as app  # type: ignore[no-redef]  # noqa: E402,F811
+
+
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False)
+'''

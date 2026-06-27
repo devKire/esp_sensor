@@ -387,6 +387,8 @@ Dependências:
 streamlit
 pandas
 plotly
+reportlab
+flask
 ```
 
 ## Como Executar
@@ -423,7 +425,9 @@ http://localhost:8501
 
 ### Versão Flask para Vercel
 
-A versão de deploy para Vercel fica em `api/index.py`, na raiz do repositório, e exporta a variável top-level `app` exigida pelo runtime Python da Vercel.
+A versão de deploy para Vercel fica na pasta `api/`, na raiz do repositório.
+O arquivo `api/index.py` continua exportando a variável top-level `app` exigida
+pelo runtime Python da Vercel. A aplicação Flask completa fica em `api/web_app.py`.
 
 Para testar localmente a versão Flask a partir da raiz do repositório:
 
@@ -437,16 +441,58 @@ Depois abra:
 http://localhost:5000
 ```
 
-Rotas disponíveis na versão Flask:
+A versão Flask/Vercel possui navegação interna com:
 
-- `/`: página principal com cards, LCD, ESP32 visual, controles e histórico recente;
-- `/step`: executa 1 ciclo;
-- `/run/10`: executa 10 ciclos;
-- `/run/30`: executa 30 ciclos;
-- `/reset`: reseta a simulação;
-- `/csv`: baixa o histórico em CSV.
+1. Visão Geral;
+2. Placa ESP32;
+3. Simulador;
+4. Gráficos;
+5. Histórico;
+6. Relatório;
+7. Sobre o Projeto.
 
-Na Vercel, selecione a raiz do repositório `esp_sensor`. O arquivo `vercel.json` direciona as requisições para `api/index.py`, evitando que o `main.py` de terminal seja usado como entrypoint web.
+Funcionalidades disponíveis na versão Flask:
+
+- cards de temperatura, umidade, luminosidade, presença, atuadores, consumo e economia;
+- LCD simulado;
+- visual da ESP32 com sensores, atuadores, fios, GPIOs e cores dinâmicas;
+- botões de próximo ciclo, 10 ciclos, 30 ciclos e reset;
+- formulário para rodar quantidade personalizada de ciclos;
+- modo automático/manual;
+- formulário de leitura manual com temperatura, umidade, luminosidade e presença;
+- cenários prontos de demonstração;
+- gráficos SVG offline para temperatura, umidade, luminosidade, presença, consumo e economia;
+- histórico com últimas 10, 25, 50 linhas ou todos os registros;
+- relatório com resumo de ciclos, tempo, consumo, economia e acionamentos;
+- download CSV;
+- download do PDF acadêmico quando o arquivo está presente no deploy;
+- endpoints `/health` e `/api/state`.
+
+Rotas disponíveis:
+
+```text
+/              dashboard Flask completo
+/step          executa 1 ciclo
+/run/10        executa 10 ciclos
+/run/30        executa 30 ciclos
+/run-custom    executa ciclos personalizados via POST
+/manual        aplica leitura manual via POST
+/mode          alterna automático/manual via POST
+/reset         reseta a simulação
+/csv           baixa o histórico CSV
+/pdf           baixa o relatório PDF acadêmico
+/health        health check
+/api/state     estado atual em JSON
+```
+
+Na Vercel, selecione a raiz do repositório `esp_sensor`. O arquivo `vercel.json`
+direciona as requisições para `api/index.py`, evitando que o `main.py` de terminal
+seja usado como entrypoint web.
+
+Observação: a Vercel usa funções serverless, então o estado em memória pode
+reiniciar entre requisições ou novas instâncias. Para demonstração acadêmica,
+a simulação funciona durante a vida da instância. Para persistência real, use
+banco de dados ou armazenamento externo.
 
 ## Como Apresentar em Sala
 
