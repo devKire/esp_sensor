@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+*.log
+teste_relatorio.csv
+relatorio.csv
+relatorio_eficiencia_energetica.csv
