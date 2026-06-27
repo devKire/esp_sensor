@@ -421,6 +421,33 @@ Abra:
 http://localhost:8501
 ```
 
+### Versão Flask para Vercel
+
+A versão de deploy para Vercel fica em `api/index.py`, na raiz do repositório, e exporta a variável top-level `app` exigida pelo runtime Python da Vercel.
+
+Para testar localmente a versão Flask a partir da raiz do repositório:
+
+```bash
+python api/index.py
+```
+
+Depois abra:
+
+```text
+http://localhost:5000
+```
+
+Rotas disponíveis na versão Flask:
+
+- `/`: página principal com cards, LCD, ESP32 visual, controles e histórico recente;
+- `/step`: executa 1 ciclo;
+- `/run/10`: executa 10 ciclos;
+- `/run/30`: executa 30 ciclos;
+- `/reset`: reseta a simulação;
+- `/csv`: baixa o histórico em CSV.
+
+Na Vercel, selecione a raiz do repositório `esp_sensor`. O arquivo `vercel.json` direciona as requisições para `api/index.py`, evitando que o `main.py` de terminal seja usado como entrypoint web.
+
 ## Como Apresentar em Sala
 
 1. Explique o desperdício de energia em salas comerciais.
